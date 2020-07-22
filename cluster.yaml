@@ -1,30 +1,39 @@
-apiVersion: v1
-data:
-  mapRoles: |
-    - rolearn: arn:aws:iam::633799498526:role/jenkins-admin
-      username: jenkins-admin
-      groups:
-        - system:masters
-    - groups:
-      - system:bootstrappers
-      - system:nodes
-      rolearn: arn:aws:iam::633799498526:role/jenkins-admin
-      username: jenkins-admin
-    - groups:
-      - system:bootstrappers
-      - system:nodes
-      rolearn: arn:aws:iam::633799498526:role/NodeInstanceRole
-      username: system:node:{{EC2PrivateDNSName}}
-   mapUsers: |
-     []    
-kind: ConfigMap
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"mapRoles":"- rolearn: arn:aws:iam::633799498526:role/NodeInstanceRole\n  username: system:node:{{EC2PrivateDNSName}}\n  rolearn: arn:aws:iam::633799498526:role/eks-jenkins\n  username: eks-jenkins\n  groups:\n    - system:bootstrappers\n    - system:nodes\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"aws-auth","namespace":"kube-system"}}
-  creationTimestamp: "2020-07-01T15:00:16Z"
-  name: aws-auth
-  namespace: kube-system
-  resourceVersion: "126348"
-  selfLink: /api/v1/namespaces/kube-system/configmaps/aws-auth
-  uid: 2ae6b3ce-a7db-473b-aee0-1077ec2c3afc
+  name: CLUSTER_NAME
+  region: AWS_REGION
+  version: "1.17"
+
+vpc:
+  subnets:
+    public:
+      pub-02: { id: subnet-044bfb49b2f2efd8c }
+      pub-01: { id: subnet-0eb199c0007a446ee }
+    private:
+      pvt-02: { id: subnet-00670b82854d79fed }
+      pvt-03: { id: subnet-06466bd7cde8b01f6 }
+
+# To enable all of the control plane logs, uncomment below:
+# cloudWatch:
+#  clusterLogging:
+#    enableTypes: ["*"]
+
+managedNodeGroups:
+  - name: NODEGROUP_NAME1
+    instanceType: t2.large
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    ssh:
+       PublicKeyName: PEM_KEY
+
+nodeGroups:
+  - name: NODEGROUP_NAME2
+    amiFamily: WindowsServer2019FullContainer
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    ssh:
+       PublicKeyName: PEM_KEY
