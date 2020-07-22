@@ -47,6 +47,8 @@ managedNodeGroups:
     ssh:
     allow: true
       publicKeyName:  PEM_KEY_NAME without .pem
+   tags:
+     Name: Linux-NG
 
 nodeGroups:
   - name: NODEGROUP_WINDOWS
@@ -58,6 +60,8 @@ nodeGroups:
     ssh:
     allow: true
       publicKeyName:  PEM_KEY_NAME without .pem
+    tags:
+      Name: Windows-NG
     
 ##Command to execute##
 eksctl create cluster -f cluster.yaml --install-vpc-controllers
