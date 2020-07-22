@@ -14,7 +14,8 @@ eksctl create cluster \
 
 
 ##Creating Cluster with windows node group## TYPE-2
-create a file with name cluster-spec.yaml 
+create a file with name cluster.yaml 
+
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
@@ -57,5 +58,8 @@ nodeGroups:
        PublicKeyName: PEM_KEY
     
 ##Command to execute##
-eksctl create cluster -f cluster-spec.yaml --install-vpc-controllers
+eksctl create cluster -f cluster.yaml --install-vpc-controllers
+
+##Command to update cluster##
+aws eks --region region update-kubeconfig --name cluster_name
 
