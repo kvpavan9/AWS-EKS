@@ -1,3 +1,20 @@
+##Creating a cluster with managed node group## TYPE-1
+eksctl create cluster \
+--name prod \
+--version 1.17 \
+--region us-west-2 \
+--nodegroup-name linux-nodes \
+--node-type t3.medium \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 4 \
+--ssh-access \
+--ssh-public-key my-public-key.pub \
+--managed
+
+
+##Creating Cluster with windows node group## TYPE-2
+create a file with name cluster-spec.yaml 
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
@@ -21,7 +38,7 @@ vpc:
 #    enableTypes: ["*"]
 
 managedNodeGroups:
-  - name: NODEGROUP_NAME1
+  - name: NODEGROUP_LINUX
     instanceType: t2.large
     desiredCapacity: 1
     minSize: 1
@@ -30,10 +47,15 @@ managedNodeGroups:
        PublicKeyName: PEM_KEY
 
 nodeGroups:
-  - name: NODEGROUP_NAME2
+  - name: NODEGROUP_WINDOWS
+    instanceType: t2.large
     amiFamily: WindowsServer2019FullContainer
     desiredCapacity: 1
     minSize: 1
     maxSize: 3
     ssh:
        PublicKeyName: PEM_KEY
+    
+##Command to execute##
+eksctl create cluster -f cluster-spec.yaml --install-vpc-controllers
+
