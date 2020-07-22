@@ -45,7 +45,8 @@ managedNodeGroups:
     minSize: 1
     maxSize: 3
     ssh:
-       PublicKeyName: PEM_KEY
+    allow: true
+      publicKeyName:  PEM_KEY_NAME without .pem
 
 nodeGroups:
   - name: NODEGROUP_WINDOWS
@@ -55,7 +56,8 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     ssh:
-       PublicKeyName: PEM_KEY
+    allow: true
+      publicKeyName:  PEM_KEY_NAME without .pem
     
 ##Command to execute##
 eksctl create cluster -f cluster.yaml --install-vpc-controllers
