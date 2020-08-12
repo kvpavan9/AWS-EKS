@@ -45,7 +45,6 @@ managedNodeGroups:
     minSize: 1
     maxSize: 3
     ssh:
-    allow: true
       publicKeyName:  PEM_KEY_NAME without .pem
    tags:
      Name: Linux-NG
@@ -58,7 +57,6 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     ssh:
-    allow: true
       publicKeyName:  PEM_KEY_NAME without .pem
     tags:
       Name: Windows-NG
